@@ -28,11 +28,69 @@ class App extends Component {
     };
   }
 
+  addCredits = (info) => {
+    let credits = [...this.state.creditList];
+    let newCreditSubmission = {
+      amount: info.amount,
+      description: info.description,
+      date: info.date,
+    };
+    credits.push(newCreditSubmission);
+    let newBalance = Number(this.state.accountBalance) + Number(info.amount);
+    this.setState({ creditList: credits, accountBalance: newBalance });
+    console.log(credits);
+  };
+ 
   // Update state's currentUser (userName) after "Log In" button is clicked
   mockLogIn = (logInInfo) => {  
     const newUser = {...this.state.currentUser};
     newUser.userName = logInInfo.userName;
     this.setState({currentUser: newUser})
+  };
+
+   addDebit = (info) => {
+    let debits = [...this.state.debitList];
+    let newDebitSubmission = {
+      amount: info.amount,
+      description: info.description,
+      date: info.date,
+    };
+    debits.push(newDebitSubmission);
+    let newBalance = (this.state.accountBalance - info.amount).toFixed(2);
+    this.setState({ debitList: debits, accountBalance: newBalance });
+  };
+
+  
+  async componentDidMount() {
+    let debit_api_endpoint = "https://johnnylaicode.github.io/api/debits.json";
+    let credit_api_endpoint =
+      "https://johnnylaicode.github.io/api/credits.json";
+    try {
+      let debit_list = await axios.get(debit_api_endpoint);
+      debit_list = debit_list.data;
+      let credit_list = await axios.get(credit_api_endpoint);
+      credit_list = credit_list.data;
+      //Account Balance = Total Credit - Total Debit
+      let totalDebit = 0;
+      let totalCredit = 0;
+      credit_list.forEach((credit) => {
+        totalCredit += credit.amount;
+      });
+      debit_list.forEach((debt) => {
+        totalDebit += debt.amount;
+      });
+      let account_balance = (totalCredit - totalDebit).toFixed(2);
+
+      this.setState({ debitList: debit_list, accountBalance: account_balance });
+      this.setState({ creditList: credit_list });
+    } catch (error) {
+      // Print out errors at console when there is an error response
+      if (error.response) {
+        // The request was made, and the server responded with error message and status code.
+        console.log(error.response.data); // Print out error message (e.g., Not Found)
+        console.log(error.response.status); // Print out error status code (e.g., 404)
+      }
+    }
   }
 
   // Create Routes and React elements to be rendered using React components
