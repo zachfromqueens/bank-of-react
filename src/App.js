@@ -18,7 +18,7 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 1234567.89,
+      accountBalance: 0,
       creditList: [],
       debitList: [],
       currentUser: {
@@ -26,6 +26,37 @@ class App extends Component {
         memberSince: '11/22/99',
       }
     };
+  }
+
+  // Update state's currentUser (userName) after "Log In" button is clicked
+  mockLogIn = (logInInfo) => {  
+    const newUser = {...this.state.currentUser};
+    newUser.userName = logInInfo.userName;
+    this.setState({currentUser: newUser})
+  }
+
+  componentDidMount() {
+    // Fetch credits data
+    fetch('https://johnnylaicode.github.io/api/credits.json')
+      .then(response => response.json())
+      .then(data => {
+        const totalCredits = data.reduce((total, credit) => total + credit.amount, 0);
+        this.setState({ creditList: data, accountBalance: totalCredits });
+      })
+      .catch(error => {
+        console.error('Error fetching credits data:', error);
+      });
+
+    // Fetch debits data
+    fetch('https://johnnylaicode.github.io/api/debits.json')
+      .then(response => response.json())
+      .then(data => {
+        const totalDebits = data.reduce((total, debit) => total + debit.amount, 0);
+        this.setState({ debitList: data, accountBalance: this.state.accountBalance - totalDebits });
+      })
+      .catch(error => {
+        console.error('Error fetching debits data:', error);
+      });
   }
 
   addCredits = (info) => {
@@ -40,57 +71,13 @@ class App extends Component {
     this.setState({ creditList: credits, accountBalance: newBalance });
     console.log(credits);
   };
- 
-  // Update state's currentUser (userName) after "Log In" button is clicked
-  mockLogIn = (logInInfo) => {  
-    const newUser = {...this.state.currentUser};
-    newUser.userName = logInInfo.userName;
-    this.setState({currentUser: newUser})
-  };
 
-   addDebit = (info) => {
-    let debits = [...this.state.debitList];
-    let newDebitSubmission = {
-      amount: info.amount,
-      description: info.description,
-      date: info.date,
-    };
-    debits.push(newDebitSubmission);
-    let newBalance = (this.state.accountBalance - info.amount).toFixed(2);
-    this.setState({ debitList: debits, accountBalance: newBalance });
-  };
-
-  
-  async componentDidMount() {
-    let debit_api_endpoint = "https://johnnylaicode.github.io/api/debits.json";
-    let credit_api_endpoint =
-      "https://johnnylaicode.github.io/api/credits.json";
-    try {
-      let debit_list = await axios.get(debit_api_endpoint);
-      debit_list = debit_list.data;
-      let credit_list = await axios.get(credit_api_endpoint);
-      credit_list = credit_list.data;
-      //Account Balance = Total Credit - Total Debit
-      let totalDebit = 0;
-      let totalCredit = 0;
-      credit_list.forEach((credit) => {
-        totalCredit += credit.amount;
-      });
-      debit_list.forEach((debt) => {
-        totalDebit += debt.amount;
-      });
-      let account_balance = (totalCredit - totalDebit).toFixed(2);
-
-      this.setState({ debitList: debit_list, accountBalance: account_balance });
-      this.setState({ creditList: credit_list });
-    } catch (error) {
-      // Print out errors at console when there is an error response
-      if (error.response) {
-        // The request was made, and the server responded with error message and status code.
-        console.log(error.response.data); // Print out error message (e.g., Not Found)
-        console.log(error.response.status); // Print out error status code (e.g., 404)
-      }
-    }
+  // Function to add debit
+  addDebit = (debit) => {
+    this.setState(prevState => ({
+      debitList: [...prevState.debitList, debit],
+      accountBalance: prevState.accountBalance - debit.amount
+    }));
   }
 
   // Create Routes and React elements to be rendered using React components
@@ -101,8 +88,8 @@ class App extends Component {
       <UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince} />
     )
     const LogInComponent = () => (<LogIn user={this.state.currentUser} mockLogIn={this.mockLogIn} />)
-    const CreditsComponent = () => (<Credits credits={this.state.creditList} />) 
-    const DebitsComponent = () => (<Debits debits={this.state.debitList} />) 
+    const CreditsComponent = () => (<Credits credits={this.state.creditList} accountBalance={this.state.accountBalance} addCredits={this.addCredits} />) 
+    const DebitsComponent = () => (<Debits debits={this.state.debitList} accountBalance={this.state.accountBalance} addDebit={this.addDebit} />) 
 
     // Important: Include the "basename" in Router, which is needed for deploying the React app to GitHub Pages
     return (
