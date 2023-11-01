@@ -12,7 +12,7 @@ Bodrul Jalal
 
 
 ### Live Link 
-[Website link](https://johnnylaicode.github.io/bank-of-react-starter-code/)
+[Website link](https://justin5802.github.io/bank-of-react/))
 
 ----------
 ### 1. Use the following process to ***import*** the Assignment 3 starter code repository to your GitHub account as your starter codebase
