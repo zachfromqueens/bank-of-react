@@ -11,6 +11,8 @@ const Credits = (props) => {
     <div>
       <h1>Credits</h1>
       <br/>
+      <AccountBalance accountBalance={this.props.accountBalance}/>
+      <br/>
       <Link to="/">Return to Home</Link>
     </div>
   );
