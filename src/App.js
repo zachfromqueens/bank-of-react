@@ -18,7 +18,7 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 0.00,
+      accountBalance: 100.00,
       creditList: [],
       debitList: [],
       currentUser: {
