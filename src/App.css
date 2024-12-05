@@ -1,6 +1,6 @@
-.App {
+ .App {
   text-align: center;
-  background-color: purple;
+  background-color: violet;
 }
 
 .App-logo {
@@ -36,4 +36,15 @@
   to {
     transform: rotate(360deg);
   }
-}
+} 
+
+.ul {
+  list-style-type: none;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: green;
+ }
+
+.li {
+  list-style-type: none;
+  font-family: 'Courier New', Courier, monospace;
+ }

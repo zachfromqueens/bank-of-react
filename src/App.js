@@ -6,6 +6,7 @@ It contains the top-level state.
 ==================================================*/
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import './App.css';
 
 // Import other components
 import Home from './components/Home';
@@ -18,7 +19,7 @@ class App extends Component {
   constructor() {  // Create and initialize state
     super(); 
     this.state = {
-      accountBalance: 0.00,
+      accountBalance: 100.00,
       creditList: [],
       creditAmount:0,
       debitList: [],
@@ -68,3 +69,5 @@ class App extends Component {
 }
 
 export default App;
+
+
