@@ -144,7 +144,7 @@
 import React, {/*Component,*/ useState} from 'react';
 import {Link} from 'react-router-dom';
 import AccountBalance from './AccountBalance';
-import Home from './Home';
+
 
 
 
@@ -160,19 +160,30 @@ const Credits = (props) => {
   const [balance, setBalance] = useState(props.bal);
   //const balance = {this.props.accountBalance};
 
-  function handleChangeBalance() {
-    setBalance (balance + amount);
-  };
+ const handleUpdateBalance = (newBalance) => {
+  // let newBalance= balance + amount;
+  // console.log(balance)
+  props.updateBalance(newBalance);
+ }
+ 
+  // function handleChangeBalance() {
+  //   useState(this.props.updateBalance(amount));
+  // };
 
   const handleSubmit = () =>{
     if (description && amount) {
       const currentDateTime = new Date().toLocaleString();
-      handleChangeBalance();
+      const intAmount = parseInt(amount, 10);
+      const intBalance = parseInt(balance,10);
+      
+
+      let newBalance=intAmount + intBalance;
+      let intNewBalance= parseInt(newBalance,10)
+      handleUpdateBalance(intNewBalance);
       setItems([...items, { description, amount: parseFloat(amount), date: currentDateTime }]);
           setDescription('');
           setAmount('');
-          
-          console.log(props);
+          setBalance(newBalance)
           } else {
             alert("Please enter both description and amount");
           }

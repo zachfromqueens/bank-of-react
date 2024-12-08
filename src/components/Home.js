@@ -10,6 +10,7 @@ import {Link} from 'react-router-dom';
 
 
 class Home extends Component {
+
   
   render() {
     return (
@@ -22,8 +23,7 @@ class Home extends Component {
         <br/>
         <Link to="/login">Login</Link>
         <br/>
-        <Link to="/credits"
-          accountBalance={this.props.accountBalance}>Credits</Link>
+        <Link to="/credits">Credits</Link>
         <br/>
         <Link to="/debits">Debits</Link>
         <br/><br/>
