@@ -155,14 +155,12 @@ const Credits = (props) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [items, setItems] = useState([]);
-  //const aBalance = {props,accountBalance}; 
-  //const {balance} = location.state;
+  const [creditList, setCreditList] = useState(props.creditList);
+  
   const [balance, setBalance] = useState(props.bal);
   //const balance = {this.props.accountBalance};
 
  const handleUpdateBalance = (newBalance) => {
-  // let newBalance= balance + amount;
-  // console.log(balance)
   props.updateBalance(newBalance);
  }
  
@@ -170,16 +168,19 @@ const Credits = (props) => {
   //   useState(this.props.updateBalance(amount));
   // };
 
+  // props.setCredits([...credits,
+  //   {}
+  // ])
+
   const handleSubmit = () =>{
     if (description && amount) {
       const currentDateTime = new Date().toLocaleString();
       const intAmount = parseInt(amount, 10);
       const intBalance = parseInt(balance,10);
-      
-
       let newBalance=intAmount + intBalance;
       let intNewBalance= parseInt(newBalance,10)
       handleUpdateBalance(intNewBalance);
+
       setItems([...items, { description, amount: parseFloat(amount), date: currentDateTime }]);
           setDescription('');
           setAmount('');
