@@ -144,12 +144,21 @@
 import React, {/*Component,*/ useState} from 'react';
 import {Link} from 'react-router-dom';
 import AccountBalance from './AccountBalance';
+import Home from './Home';
+
+
+
+
 
 const Credits = (props) => {
 
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [items, setItems] = useState([]);
+  //const aBalance = {props,accountBalance}; 
+  //const {balance} = location.state;
+  const [balance, setBalance] = useState(props.bal);
+  //const balance = {this.props.accountBalance};
 
   
 
@@ -159,15 +168,21 @@ const Credits = (props) => {
       setItems([...items, { description, amount: parseFloat(amount), date: currentDateTime }]);
           setDescription('');
           setAmount('');
+          console.log(props);
           } else {
             alert("Please enter both description and amount");
           }
   };
 
+ 
   return (
     <div>
     <div>
       <h1>Credits</h1>
+      <br/>
+     
+      <AccountBalance accountBalance={balance}/>
+      
       <br/>
       <Link to="/">Return to Home</Link>
     </div>
@@ -195,11 +210,7 @@ const Credits = (props) => {
 
     <div>
       <h1>Credit Transactions:</h1>
-      <div>
-    render(){
-      <AccountBalance accountBalance={this.state.props.accountBalance}/>
-    }
-      </div>
+     
     </div>
 
     <div>
@@ -217,5 +228,6 @@ const Credits = (props) => {
     </div>
   );
 }
+
 
 export default Credits;
