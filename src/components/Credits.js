@@ -160,14 +160,18 @@ const Credits = (props) => {
   const [balance, setBalance] = useState(props.bal);
   //const balance = {this.props.accountBalance};
 
-  
+  function handleChangeBalance() {
+    setBalance (balance + amount);
+  };
 
   const handleSubmit = () =>{
     if (description && amount) {
       const currentDateTime = new Date().toLocaleString();
+      handleChangeBalance();
       setItems([...items, { description, amount: parseFloat(amount), date: currentDateTime }]);
           setDescription('');
           setAmount('');
+          
           console.log(props);
           } else {
             alert("Please enter both description and amount");
